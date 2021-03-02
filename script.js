@@ -1,5 +1,5 @@
 const apihost = 'https://todo-api.coderslab.pl';
-const apikey = "";
+const apikey = "234e2860-88e8-4de2-abf6-bad4f9e4374a";
 
 function apiListAllTasks() {
     return fetch(
@@ -76,13 +76,53 @@ function renderTask(taskId, title, description, status) {
     deleteButton.className = "btn btn-outline-danger btn-sm ml-2";
     deleteButton.innerText = "Delete";
     headerRightDiv.appendChild(deleteButton);
+
+    const ul = document.createElement("ul");
+    ul.className = "list-group list-group-flush"
+    section.appendChild(ul);
+
+    if (status === "open") {
+        const addOperationDiv = document.createElement("div");
+        addOperationDiv.className = "card-body";
+        section.appendChild(addOperationDiv);
+
+        const form = document.createElement("form");
+        addOperationDiv.appendChild(form);
+
+        const inputDiv = document.createElement("div");
+        inputDiv.className = "input-group";
+        form.appendChild(inputDiv);
+
+        const inputDescription = document.createElement("input");
+        inputDescription.setAttribute("type", "text");
+        inputDescription.setAttribute("placeholder", "Operation description");
+        inputDescription.setAttribute("minlength", "5");
+        inputDescription.className = "form-control";
+        inputDiv.appendChild(inputDescription);
+
+        const inputGroupAppend = document.createElement("div");
+        inputGroupAppend.className = "input-group-append";
+        inputDiv.appendChild(inputGroupAppend);
+
+        const addOperationButton = document.createElement("button");
+        addOperationButton.className = "btn btn-info";
+        addOperationButton.innerText = "Add";
+        inputGroupAppend.appendChild(addOperationButton);
+
+        addOperationButton.addEventListener("submit", ev => {
+            ev.preventDefault();
+
+        //    TODO
+        //      - add event for this button
+
+        });
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
     apiListTasks()
         .then(resp => {
-                resp.data.forEach( task => {
-                    function (task) {
+                resp.data.forEach(task => {
                         renderTask(task.id, task.title, task.description, task.status);
                     }
                 );
