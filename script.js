@@ -1,5 +1,4 @@
 const apihost = 'https://todo-api.coderslab.pl';
-const apikey = "234e2860-88e8-4de2-abf6-bad4f9e4374a";
 
 function apiListAllTasks() {
     return fetch(
@@ -117,6 +116,22 @@ function renderTask(taskId, title, description, status) {
 
         });
     }
+}
+
+function renderOperation(operationsList, status, operationId, operationDescription, timeSpent) {
+    const li = document.createElement("li");
+    li.className = "list-group-item d-flex justify-content-between align-items-center";
+
+    operationsList.appendChild(li);
+
+    const descriptionDiv = document.createElement("div");
+    descriptionDiv.innerText = operationDescription;
+    li.appendChild(descriptionDiv);
+
+    const time = document.createElement("span");
+    time.className = "badge badge-success badge-pill ml-2";
+    time.innerText = timeSpent + "m";
+    descriptionDiv.appendChild(time);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
