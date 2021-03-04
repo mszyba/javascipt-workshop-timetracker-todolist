@@ -2,30 +2,18 @@ const apihost = 'https://todo-api.coderslab.pl';
 
 const addTaskButton = document.querySelector(".js-task-adding-form");
 
-function apiListAllTasks() {
-    return fetch(
-        apihost + '/api/tasks',
-        {headers: {'Authorization': apikey}}
-    )
-        .then(resp => {
-                if (!resp.ok) {
-                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
-                }
-                return resp.json();
-            }
-        );
-}
-
 function apiCreateTask(title, description) {
     return fetch(
         apihost + '/api/tasks',
         {
-            headers: { 'Authorization': apikey, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: title, description: description, status: "open" }),
+            headers: {'Authorization': apikey, 'Content-Type': 'application/json'},
+            body: JSON.stringify({title: title, description: description, status: "open"}),
             method: "POST"
-            }
+        }
     ).then(resp => {
-        if(!resp.ok) { alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny'); }
+        if (!resp.ok) {
+            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+        }
         return resp.json();
     });
 }
@@ -33,10 +21,12 @@ function apiCreateTask(title, description) {
 function apiListTasks() {
     return fetch(
         apihost + '/api/tasks',
-        { headers: { 'Authorization': apikey }}
-        ).then(resp => {
-            if(!resp.ok) { alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny'); }
-            return resp.json();
+        {headers: {'Authorization': apikey}}
+    ).then(resp => {
+        if (!resp.ok) {
+            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+        }
+        return resp.json();
     });
 }
 
@@ -45,7 +35,9 @@ function apiListOperationsForTask(taskId) {
         apihost + '/api/tasks/' + taskId + '/operations',
         {headers: {'Authorization': apikey}}
     ).then(resp => {
-        if (!resp.ok) { alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny') }
+        if (!resp.ok) {
+            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny')
+        }
         return resp.json();
     });
 }
@@ -54,25 +46,13 @@ function apiDeleteTask(taskId) {
     return fetch(
         apihost + '/api/tasks/' + taskId,
         {
-            headers: { 'Authorization': apikey },
+            headers: {'Authorization': apikey},
             method: "DELETE"
-            }
-    ).then(resp => {
-        if(!resp.ok) { alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny'); }
-        return resp.json();
-    });
-}
-
-function apiCreateOperationForTask(taskId, description) {
-    return fetch(
-        apihost + '/api/tasks/' + taskId + '/operations',
-        {
-            headers: { 'Authorization': apikey, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ description: description, timeSpent: 0 }),
-            method: 'POST'
         }
     ).then(resp => {
-        if(!resp.ok) { alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny'); }
+        if (!resp.ok) {
+            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+        }
         return resp.json();
     });
 }
@@ -123,10 +103,6 @@ function renderTask(taskId, title, description, status) {
     const ul = document.createElement("ul");
     ul.className = "list-group list-group-flush"
     section.appendChild(ul);
-
-    // TODO
-    //  - dodaj apilistOperationForTasks
-    //  -- zrobione
 
     apiListOperationsForTask(taskId)
         .then(resp => {
@@ -205,7 +181,7 @@ function formatTime(timeMin) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     apiListTasks()
         .then(resp => {
                 resp.data.forEach(task => {
