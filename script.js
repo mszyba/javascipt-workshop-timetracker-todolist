@@ -97,7 +97,6 @@ function renderTask(taskId, title, description, status) {
     apiListOperationsForTask(taskId)
         .then(resp => {
             resp.data.forEach(operation => {
-                console.log(operation);
                 renderOperation(ul, status, operation.id, operation.description, operation.timeSpent)
             });
         });
@@ -177,9 +176,9 @@ document.addEventListener("DOMContentLoaded", function() {
         );
 });
 
-addTaskButton.addEventListener("submit", evt => {
-    evt.preventDefault();
-    apiCreateTask(evt.target.elements.title.value, evt.target.elements.description.value)
+addTaskButton.addEventListener("submit", ev => {
+    ev.preventDefault();
+    apiCreateTask(ev.target.elements.title.value, ev.target.elements.description.value)
         .then(resp => {
             renderTask(
                 resp.data.id,
