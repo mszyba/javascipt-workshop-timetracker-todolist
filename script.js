@@ -212,8 +212,7 @@ function renderTask(taskId, title, description, status) {
         addOperationButton.innerText = "Add";
         inputGroupAppend.appendChild(addOperationButton);
 
-        form.addEventListener("submit", ev => {
-            ev.preventDefault;
+        form.addEventListener("submit", () => {
             apiCreateOperationForTask(taskId, inputDescription.value)
                 .then(resp => {
                     renderOperation(
