@@ -1,5 +1,7 @@
 const apihost = 'https://todo-api.coderslab.pl';
 
+const addTaskButton = document.querySelector(".js-task-adding-form");
+
 function apiListAllTasks() {
     return fetch(
         apihost + '/api/tasks',
@@ -18,12 +20,10 @@ function apiCreateTask(title, description) {
     return fetch(
         apihost + '/api/tasks',
         {
-            headers: {
-                'Authorization': apikey,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ title: title, description: description })
-        }
+            headers: { 'Authorization': apikey, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: title, description: description, status: "open" }),
+            method: "POST"
+            }
     ).then(resp => {
         if(!resp.ok) { alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny'); }
         return resp.json();
@@ -175,5 +175,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 );
             }
         );
+});
+
+addTaskButton.addEventListener("submit", evt => {
+    evt.preventDefault();
+    apiCreateTask(evt.target.elements.title.value, evt.target.elements.description.value)
+        .then(resp => {
+            renderTask(
+                resp.data.id,
+                resp.data.title,
+                resp.data.description,
+                resp.data.status
+            )
+        });
 });
 
