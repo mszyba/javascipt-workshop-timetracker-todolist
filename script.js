@@ -40,6 +40,16 @@ function apiListTasks() {
     });
 }
 
+function apiListOperationsForTask(taskId) {
+    return fetch(
+        apihost + '/api/tasks/' + taskId + '/operations',
+        {headers: {'Authorization': apikey}}
+    ).then(resp => {
+        if (!resp.ok) { alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny') }
+        return resp.json();
+    });
+}
+
 function renderTask(taskId, title, description, status) {
     const section = document.createElement("section");
     section.className = "card mt-5 shadow-sm";
@@ -79,6 +89,18 @@ function renderTask(taskId, title, description, status) {
     const ul = document.createElement("ul");
     ul.className = "list-group list-group-flush"
     section.appendChild(ul);
+
+    // TODO
+    //  - dodaj apilistOperationForTasks
+    //  -- zrobione
+
+    apiListOperationsForTask(taskId)
+        .then(resp => {
+            resp.data.forEach(operation => {
+                console.log(operation);
+                renderOperation(ul, status, operation.id, operation.description, operation.timeSpent)
+            });
+        });
 
     if (status === "open") {
         const addOperationDiv = document.createElement("div");
