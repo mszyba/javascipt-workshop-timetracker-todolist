@@ -177,7 +177,8 @@ function renderTask(taskId, title, description, status) {
         addOperationButton.innerText = "Add";
         inputGroupAppend.appendChild(addOperationButton);
 
-        form.addEventListener("submit", () => {
+        form.addEventListener("submit", ev => {
+            ev.preventDefault();
             apiCreateOperationForTask(taskId, inputDescription.value)
                 .then(resp => {
                     renderOperation(
@@ -188,6 +189,7 @@ function renderTask(taskId, title, description, status) {
                         resp.data.timeSpent
                     )
                 });
+            inputDescription.value = "";
         });
     }
 }
@@ -275,7 +277,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const addTaskButton = document.querySelector(".js-task-adding-form");
 addTaskButton.addEventListener("submit", ev => {
-    ev.preventDefault();
     apiCreateTask(ev.target.elements.title.value, ev.target.elements.description.value)
         .then(resp => {
             renderTask(
