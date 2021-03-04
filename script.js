@@ -152,8 +152,18 @@ function renderOperation(operationsList, status, operationId, operationDescripti
 
     const time = document.createElement("span");
     time.className = "badge badge-success badge-pill ml-2";
-    time.innerText = timeSpent + "m";
+    time.innerText = formatTime(timeSpent);
     descriptionDiv.appendChild(time);
+}
+
+function formatTime(timeMin) {
+    const hours = Math.floor(timeMin / 60);
+    const minutes = timeMin % 60;
+    if (hours > 0) {
+        return hours + "h " + minutes + "min";
+    } else {
+        return minutes + "min";
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
