@@ -10,36 +10,21 @@ function apiCreateTask(title, description) {
             body: JSON.stringify({title: title, description: description, status: "open"}),
             method: "POST"
         }
-    ).then(resp => {
-        if (!resp.ok) {
-            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
-        }
-        return resp.json();
-    });
+    ).then(getRespJson);
 }
 
 function apiListTasks() {
     return fetch(
         apihost + '/api/tasks',
         {headers: {'Authorization': apikey}}
-    ).then(resp => {
-        if (!resp.ok) {
-            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
-        }
-        return resp.json();
-    });
+    ).then(getRespJson);
 }
 
 function apiListOperationsForTask(taskId) {
     return fetch(
         apihost + '/api/tasks/' + taskId + '/operations',
         {headers: {'Authorization': apikey}}
-    ).then(resp => {
-        if (!resp.ok) {
-            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny')
-        }
-        return resp.json();
-    });
+    ).then(getRespJson);
 }
 
 function apiDeleteTask(taskId) {
@@ -49,12 +34,7 @@ function apiDeleteTask(taskId) {
             headers: {'Authorization': apikey},
             method: "DELETE"
         }
-    ).then(resp => {
-        if (!resp.ok) {
-            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
-        }
-        return resp.json();
-    });
+    ).then(getRespJson);
 }
 
 function apiCreateOperationForTask(taskId, description) {
@@ -65,12 +45,7 @@ function apiCreateOperationForTask(taskId, description) {
             body: JSON.stringify({description: description, timeSpent: 0}),
             method: 'POST'
         }
-    ).then(resp => {
-        if (!resp.ok) {
-            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
-        }
-        return resp.json();
-    });
+    ).then(getRespJson);
 }
 
 function apiUpdateOperation(operationId, description, timeSpent) {
@@ -81,12 +56,7 @@ function apiUpdateOperation(operationId, description, timeSpent) {
             body: JSON.stringify({description: description, timeSpent: timeSpent}),
             method: 'PUT'
         }
-    ).then(resp => {
-        if (!resp.ok) {
-            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
-        }
-        return resp.json();
-    });
+    ).then(getRespJson);
 }
 
 function apiDeleteOperation(operationId) {
@@ -96,12 +66,7 @@ function apiDeleteOperation(operationId) {
             headers: {'Authorization': apikey},
             method: 'DELETE'
         }
-    ).then(resp => {
-        if (!resp.ok) {
-            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
-        }
-        return resp.json();
-    });
+    ).then(getRespJson);
 }
 
 function apiUpdateTask(taskId, title, description) {
@@ -112,12 +77,14 @@ function apiUpdateTask(taskId, title, description) {
             body: JSON.stringify({title: title, description: description, status: "closed"}),
             method: "PUT"
         }
-    ).then(resp => {
-        if (!resp.ok) {
-            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
-        }
-        return resp.json();
-    });
+    ).then(getRespJson);
+}
+
+function getRespJson(resp) {
+    if (!resp.ok) {
+        alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+    }
+    return resp.json();
 }
 
 function renderTask(taskId, title, description, status) {
