@@ -50,6 +50,19 @@ function apiListOperationsForTask(taskId) {
     });
 }
 
+function apiDeleteTask(taskId) {
+    return fetch(
+        apihost + '/api/tasks/' + taskId,
+        {
+            headers: { 'Authorization': apikey },
+            method: "DELETE"
+            }
+    ).then(resp => {
+        if(!resp.ok) { alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny'); }
+        return resp.json();
+    });
+}
+
 function renderTask(taskId, title, description, status) {
     const section = document.createElement("section");
     section.className = "card mt-5 shadow-sm";
@@ -85,6 +98,13 @@ function renderTask(taskId, title, description, status) {
     deleteButton.className = "btn btn-outline-danger btn-sm ml-2";
     deleteButton.innerText = "Delete";
     headerRightDiv.appendChild(deleteButton);
+
+    deleteButton.addEventListener("click", ev => {
+        apiDeleteTask(taskId)
+            .then(() => {
+                section.remove();
+            });
+    });
 
     const ul = document.createElement("ul");
     ul.className = "list-group list-group-flush"
