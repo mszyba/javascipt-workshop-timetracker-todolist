@@ -73,6 +73,21 @@ function apiCreateOperationForTask(taskId, description) {
     });
 }
 
+function apiUpdateOperation(operationId, description, timeSpent) {
+    return fetch(
+        apihost + '/api/operations/' + operationId,
+        {
+            headers: {'Authorization': apikey, 'Content-Type': 'application/json'},
+            body: JSON.stringify({description: description, timeSpent: timeSpent}),
+            method: 'PUT'
+        }
+    ).then(resp => {
+        if (!resp.ok) {
+            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+        }
+        return resp.json();
+    });
+}
 function renderTask(taskId, title, description, status) {
     const section = document.createElement("section");
     section.className = "card mt-5 shadow-sm";
@@ -185,6 +200,38 @@ function renderOperation(operationsList, status, operationId, operationDescripti
     time.className = "badge badge-success badge-pill ml-2";
     time.innerText = formatTime(timeSpent);
     descriptionDiv.appendChild(time);
+
+    if (status === "open") {
+        const controlDiv = document.createElement("div");
+        controlDiv.className = "js-task-open-only";
+        li.appendChild(controlDiv);
+
+        const add15minButton = document.createElement("button");
+        add15minButton.className = "btn btn-outline-success btn-sm mr-2";
+        add15minButton.innerText = "+15min";
+        controlDiv.appendChild(add15minButton);
+
+        add15minButton.addEventListener("click", () => {
+            apiUpdateOperation(operationId, operationDescription, timeSpent + 15)
+                .then(resp => {
+                    time.innerText = formatTime(resp.data.timeSpent);
+                    timeSpent = resp.data.timeSpent;
+                });
+        });
+
+        const add1hButton = document.createElement("div");
+        add1hButton.className = "btn btn-outline-success btn-sm mr-2";
+        add1hButton.innerText = "+1h";
+        controlDiv.appendChild(add1hButton);
+
+        add1hButton.addEventListener("click", () => {
+            apiUpdateOperation(operationId, operationDescription, timeSpent + 60)
+                .then(resp => {
+                    time.innerText = formatTime(resp.data.timeSpent);
+                    timeSpent = resp.data.timeSpent;
+                });
+        });
+    }
 }
 
 function formatTime(timeMin) {
