@@ -104,6 +104,22 @@ function apiDeleteOperation(operationId) {
     });
 }
 
+function apiUpdateTask(taskId, title, description) {
+    return fetch(
+        apihost + '/api/tasks/' + taskId,
+        {
+            headers: {'Authorization': apikey, 'Content-Type': 'application/json'},
+            body: JSON.stringify({title: title, description: description, status: "closed"}),
+            method: "PUT"
+        }
+    ).then(resp => {
+        if (!resp.ok) {
+            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+        }
+        return resp.json();
+    });
+}
+
 function renderTask(taskId, title, description, status) {
     const section = document.createElement("section");
     section.className = "card mt-5 shadow-sm";
@@ -133,6 +149,16 @@ function renderTask(taskId, title, description, status) {
         finishButton.className = "btn btn-dark btn-sm js-task-open-only";
         finishButton.innerText = "Finish";
         headerRightDiv.appendChild(finishButton);
+
+        finishButton.addEventListener("click", () => {
+            apiUpdateTask(taskId, title, description)
+                .then(() => {
+                    section.querySelectorAll('.js-task-open-only')
+                        .forEach(element => {
+                            element.parentElement.removeChild(element);
+                        });
+                });
+        });
     }
 
     const deleteButton = document.createElement("button");
@@ -160,7 +186,7 @@ function renderTask(taskId, title, description, status) {
 
     if (status === "open") {
         const addOperationDiv = document.createElement("div");
-        addOperationDiv.className = "card-body";
+        addOperationDiv.className = "card-body js-task-open-only";
         section.appendChild(addOperationDiv);
 
         const form = document.createElement("form");
