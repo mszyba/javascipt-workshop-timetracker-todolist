@@ -57,6 +57,22 @@ function apiDeleteTask(taskId) {
     });
 }
 
+function apiCreateOperationForTask(taskId, description) {
+    return fetch(
+        apihost + '/api/tasks/' + taskId + '/operations',
+        {
+            headers: {'Authorization': apikey, 'Content-Type': 'application/json'},
+            body: JSON.stringify({description: description, timeSpent: 0}),
+            method: 'POST'
+        }
+    ).then(resp => {
+        if (!resp.ok) {
+            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+        }
+        return resp.json();
+    });
+}
+
 function renderTask(taskId, title, description, status) {
     const section = document.createElement("section");
     section.className = "card mt-5 shadow-sm";
