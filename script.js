@@ -88,6 +88,22 @@ function apiUpdateOperation(operationId, description, timeSpent) {
         return resp.json();
     });
 }
+
+function apiDeleteOperation(operationId) {
+    return fetch(
+        apihost + '/api/operations/' + operationId,
+        {
+            headers: {'Authorization': apikey},
+            method: 'DELETE'
+        }
+    ).then(resp => {
+        if (!resp.ok) {
+            alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+        }
+        return resp.json();
+    });
+}
+
 function renderTask(taskId, title, description, status) {
     const section = document.createElement("section");
     section.className = "card mt-5 shadow-sm";
@@ -229,6 +245,18 @@ function renderOperation(operationsList, status, operationId, operationDescripti
                 .then(resp => {
                     time.innerText = formatTime(resp.data.timeSpent);
                     timeSpent = resp.data.timeSpent;
+                });
+        });
+
+        const deleteOperationButton = document.createElement("button");
+        deleteOperationButton.className = "btn btn-outline-danger btn-sm";
+        deleteOperationButton.innerText = "Delete";
+        controlDiv.appendChild(deleteOperationButton);
+
+        deleteOperationButton.addEventListener("click", () => {
+            apiDeleteOperation(operationId)
+                .then(() => {
+                    li.remove();
                 });
         });
     }
