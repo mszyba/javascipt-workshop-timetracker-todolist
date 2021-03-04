@@ -1,7 +1,5 @@
 const apihost = 'https://todo-api.coderslab.pl';
 
-const addTaskButton = document.querySelector(".js-task-adding-form");
-
 function apiCreateTask(title, description) {
     return fetch(
         apihost + '/api/tasks',
@@ -275,6 +273,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 });
 
+const addTaskButton = document.querySelector(".js-task-adding-form");
 addTaskButton.addEventListener("submit", ev => {
     ev.preventDefault();
     apiCreateTask(ev.target.elements.title.value, ev.target.elements.description.value)
