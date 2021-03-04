@@ -124,7 +124,7 @@ function renderTask(taskId, title, description, status) {
     deleteButton.innerText = "Delete";
     headerRightDiv.appendChild(deleteButton);
 
-    deleteButton.addEventListener("click", ev => {
+    deleteButton.addEventListener("click", () => {
         apiDeleteTask(taskId)
             .then(() => {
                 section.remove();
